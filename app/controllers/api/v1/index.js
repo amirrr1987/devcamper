@@ -1,4 +1,4 @@
-const bootcampsController = require('./bootcamps')
+const bootcampsController = require('./bootcamp')
 
 
 module.exports = { bootcampsController }
