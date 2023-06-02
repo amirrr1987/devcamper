@@ -3,5 +3,12 @@ const logger = (req, res, next) => {
   next()
 }
 
-module.exports = { logger}
+
+const asyncHandler = fn => (req, res, next) => {
+  Promise
+    .resolve(fn(res, res, next))
+    .catch(next)
+}
+
+module.exports = { logger, asyncHandler }
 
