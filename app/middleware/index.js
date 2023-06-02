@@ -1,6 +1,8 @@
-const logger = (req, res, next) => {
-    req.action = `${req.method} ${req.protocol}://${req.get('host')}${req.originalUrl}`
-    next()
-}
+const utils = require('../utils');
 
-module.exports = { logger }
+const before = require('./before');
+const after = require('./after');
+
+
+
+module.exports = {before,after }

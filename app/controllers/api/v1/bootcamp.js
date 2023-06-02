@@ -1,6 +1,7 @@
+const utils = require('../../../utils');
 const models = require('../../../models')
 class Bootcamps {
-    async getList(req, res) {
+    async getList(req,res,next) {
 
         try {
             const bootcamps = await models.api.v1.bootcampModel.find()
@@ -12,26 +13,15 @@ class Bootcamps {
                 action: req.action
             })
         } catch (err) {
-            res.status(400).send({
-                success: false,
-                message: err.message,
-                code: 400,
-                action: req.action
-            })
+            next(err)
         }
 
     }
-    async getOne(req, res) {
+    async getOne(req,res,next) {
         try {
             const bootcamp = await models.api.v1.bootcampModel.findById(req.params.id)
-            if (!bootcamp) {
-                return res.status(400).send({
-                    data: bootcamp,
-                    success: false,
-                    message: `can not find ${req.params.id}`,
-                    code: 400,
-                    action: req.action
-                })
+            if(!bootcamp){
+                return next(new utils.ErrorResponse(`Bootcamp not found width id of : ${req.params.id}`,404))
             }
             res.status(200).send({
                 data: bootcamp,
@@ -41,51 +31,34 @@ class Bootcamps {
                 action: req.action
             })
         } catch (err) {
-            res.status(400).send({
-                success: false,
-                message: err.message,
-                code: 400,
-                action: req.action
-            })
+            next(err)
         }
 
     }
-    async createOne(req, res) {
+    async createOne(req,res,next) {
         try {
             const bootcamp = await models.api.v1.bootcampModel.create(req.body)
-            res.status(201).send({
+
+            res.status(201).json({
                 data: bootcamp,
                 success: true,
                 message: '',
                 code: 201,
                 action: req.action
             })
+
         } catch (err) {
-            res.status(400).send({
-                success: false,
-                message: err.message,
-                code: 400,
-                action: req.action
-            })
+            next(err)
         }
-
-
     }
-    async updateOne(req, res) {
-
+    async updateOne(req, res,next) {
         try {
             const bootcamp = await models.api.v1.bootcampModel.findByIdAndUpdate(req.params.id, req.body, {
                 new: true,
                 runValidators: true,
             })
             if (!bootcamp) {
-                return res.status(400).send({
-                    data: bootcamp,
-                    success: false,
-                    message: `can not find ${req.params.id}`,
-                    code: 400,
-                    action: req.action
-                })
+                return next(new utils.ErrorResponse(`Bootcamp not found width id of : ${req.params.id}`,404))
             }
             res.status(200).send({
                 data: bootcamp,
@@ -95,26 +68,15 @@ class Bootcamps {
                 action: req.action
             })
         } catch (err) {
-            res.status(400).send({
-                success: false,
-                message: err.message,
-                code: 400,
-                action: req.action
-            })
+            next(err)
         }
     }
-    async deleteOne(req, res) {
+    async deleteOne(req, res,next) {
 
         try {
             const bootcamp = await models.api.v1.bootcampModel.findByIdAndDelete(req.params.id)
             if (!bootcamp) {
-                return res.status(400).send({
-                    data: bootcamp,
-                    success: false,
-                    message: `can not find ${req.params.id}`,
-                    code: 400,
-                    action: req.action
-                })
+                return next(new utils.ErrorResponse(`Bootcamp not found width id of : ${req.params.id}`,404))
             }
 
             res.status(200).send({
@@ -125,14 +87,8 @@ class Bootcamps {
                 action: req.action
             })
         } catch (err) {
-            res.status(400).send({
-                success: false,
-                message: err.message,
-                code: 400,
-                action: req.action
-            })
+            next(err)
         }
-
 
     }
 }
