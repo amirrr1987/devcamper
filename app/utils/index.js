@@ -1,3 +1,14 @@
+const NodeGeocoder = require('node-geocoder')
+
+const options = {
+  provider: process.env.GEOCODER_PROVIDER,
+  httpAdapter: 'https',
+  apiKey: process.env.GEOCODER_API_KEY,
+  formatter: null
+} 
+
+const geocoder = NodeGeocoder(options)
+
 class ErrorResponse extends Error{
   constructor(message,statusCode){
     super(message)
@@ -5,4 +16,5 @@ class ErrorResponse extends Error{
   }
 }
 
-module.exports = { ErrorResponse }
+
+module.exports = { ErrorResponse, geocoder }
