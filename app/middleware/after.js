@@ -25,10 +25,10 @@ const errorHandler = (err,req,res,next)=>{
 }
 
 const successHandler = (req,res)=>{
-  res.status(res.statusCode || 500).send({
+  res.status(res.statusCode || 200).send({
       data: data,
       success: true,
-      message: res.message || 'Server error',
+      message: res.message || 'Success',
       action: `${req.method} ${req.protocol}://${req.get('host')}${req.originalUrl}`
   })
 }
